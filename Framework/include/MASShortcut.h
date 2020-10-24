@@ -1,0 +1,1 @@
+/Users/vladimir/Projects/MASShortcut/Framework/Model/MASShortcut.h

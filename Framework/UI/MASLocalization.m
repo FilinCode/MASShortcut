@@ -1,3 +1,4 @@
+#import <AppKit/AppKit.h>
 #import "MASLocalization.h"
 #import "MASShortcut.h"
 
@@ -12,21 +13,7 @@ NSString *MASLocalizedString(NSString *key, NSString *comment) {
     static NSBundle *localizationBundle = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSBundle *frameworkBundle = [NSBundle bundleForClass:[MASShortcut class]];
-        // first we'll check if resources bundle was copied to MASShortcut framework bundle when !use_frameworks option is active
-        NSURL *cocoaPodsBundleURL = [frameworkBundle URLForResource:@"MASShortcut" withExtension:@"bundle"];
-        if (cocoaPodsBundleURL) {
-            localizationBundle = [NSBundle bundleWithURL: cocoaPodsBundleURL];
-        } else {
-            // trying to fetch cocoapods bundle from main bundle
-            cocoaPodsBundleURL = [[NSBundle mainBundle] URLForResource: @"MASShortcut" withExtension:@"bundle"];
-            if (cocoaPodsBundleURL) {
-                localizationBundle = [NSBundle bundleWithURL: cocoaPodsBundleURL];
-            } else {
-                // fallback to framework bundle
-                localizationBundle = frameworkBundle;
-            }
-        }
+        localizationBundle = SWIFTPM_MODULE_BUNDLE;
     });
     return [localizationBundle localizedStringForKey:key
         value:MASPlaceholderLocalizationString
